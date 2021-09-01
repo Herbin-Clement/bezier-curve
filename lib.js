@@ -57,3 +57,14 @@ const displayPoints = (Points, color = "White", onlyBorder = false) => {
     if(!onlyBorder) noFill();
     strokeWeight(1);
 }
+
+const detectColide = (Points) => {
+    let res = -1;
+    console.log(mouseX, mouseY);
+    Points.forEach((p, index) => {
+        if (mouseX > (p.x - r) && mouseX < (p.x + r)&& mouseY > (p.y - r) && mouseY < (p.y + r)) {
+            res = index;
+        }
+    });
+    return res;
+}
