@@ -12,7 +12,7 @@ let locked = false;
 let vertexArray = [];
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth * 80 / 100, windowHeight);
 }
 
 function draw() {
@@ -87,7 +87,7 @@ function draw() {
 }
 
 function windowResized() {
-	resizeCanvas(windowWidth, windowHeight);
+	resizeCanvas(windowWidth * 80 / 100, windowHeight);
 }
 
 function mouseClicked() {
