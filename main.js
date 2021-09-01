@@ -1,5 +1,6 @@
 let Points = [];
 let r = 15;
+let tDisplay = 0.5;
 let t = 0;
 let dt = 0.002;
 let display = false;
@@ -62,6 +63,7 @@ function draw() {
         endShape();
 
         if (display) {
+            const {A, B, C, D, E, P} = deCasteljauAlgorithm(Points, tDisplay);
             vectLine(A, B);
             vectLine(B, C);
             vectLine(D, E);
@@ -91,7 +93,6 @@ function windowResized() {
 function mouseClicked() {
     
     if (index !== -1) {
-        console.log(index);
     }
     if (!start) {
         Points.push(createVector(mouseX, mouseY));
@@ -107,7 +108,7 @@ function mousePressed() {
 }
 
 function mouseDragged() {
-    if (locked) {
+    if (locked && index !== -1) {
         Points[index].x = mouseX;
         Points[index].y = mouseY;
         t = 0;
