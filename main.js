@@ -1,45 +1,34 @@
 let Points = [];
 let r = 15;
-let tDisplay = 0.5;
+let tDisplay = 0.7;
 let t = 0;
 let dt = 0.002;
-let display = false;
-let displayPoint = false;
 let start = false;
 let index = -1;
 let locked = false;
-
+ 
 let vertexArray = [];
+
+
+const timeSlider = document.querySelector("#time");
+const pointsLinesBox = document.querySelector("#pointsLines");
+const pointsBox = document.querySelector("#points");
+const startButton = document.querySelector("#start");
+startButton.addEventListener("click",() => {
+    startButton.disabled = true;
+    start = true;
+})
+
+console.log(pointsLinesBox);
 
 function setup() {
     createCanvas(windowWidth * 80 / 100, windowHeight);
 }
 
 function draw() {
+    tDisplay = float(timeSlider.value);
+    console.log(tDisplay);
     background("black");
-    if (keyIsPressed) {
-        switch (key) {
-            case "d":
-                display = true;
-                break;
-            case "p":
-                displayPoint = true;
-                break;
-            case "s":
-                if (Points.length === 4) {
-                    start = true;
-                }
-                break;
-            default:
-                display = false;
-                displayPoint = false;
-                break;
-        }
-    } else {
-        display = false;
-        displayPoint = false;
-    };
-
     c = color(255);
     fill(c);
     stroke(255);
@@ -62,7 +51,7 @@ function draw() {
         });
         endShape();
 
-        if (display) {
+        if (pointsLinesBox.checked) {
             const {A, B, C, D, E, P} = deCasteljauAlgorithm(Points, tDisplay);
             vectLine(A, B);
             vectLine(B, C);
@@ -71,7 +60,7 @@ function draw() {
             vectLine(Points[1], Points[2]);
             vectLine(Points[2], Points[3]);
             displayPoints([A, B, C, D, E, P, ...Points], "white", true);
-        } else if (displayPoint) {
+        } else if (pointsBox.checked) {
             displayPoints(Points, "white", true);
         } else {
             vectLine(Points[0], Points[1]);
@@ -115,5 +104,3 @@ function mouseDragged() {
         vertexArray = [];
     }
 }
- 
-
