@@ -1,7 +1,6 @@
 let Points = [];
 let r = 15;
 let tDisplay = 0.7;
-let t = 0;
 let dt = 0.002;
 let start = false;
 let index = -1;
@@ -32,11 +31,7 @@ function draw() {
     fill(c);
     stroke(255);
     if(start) {
-        while(t <= 1) {
-            const {A, B, C, D, E, P} = deCasteljauAlgorithm(Points, t);
-            vertexArray.push({A, B, C, D, E, P});
-            t += dt;
-        }
+        vertexArray = computeBezierCurve(dt);
         // if (t < 1) t += dt;
         // const {A, B, C, D, E, P} = deCasteljauAlgorithm(Points, t);
         // vertexArray.push({A, B, C, D, E, P});

@@ -85,3 +85,14 @@ const displayPoints = (Points) => {
     vectLine(Points[2], Points[3]);
     points(Points, "white", true);
 }
+
+const computeBezierCurve = (dt) => {
+    let array = [];
+    let t = 0;
+    while (t < 1) {
+        const {A, B, C, D, E, P} = deCasteljauAlgorithm(Points, t);
+        array.push({A, B, C, D, E, P});
+        t += dt;
+    }
+    return array;
+}
