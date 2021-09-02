@@ -1,18 +1,10 @@
 const linearInterpolation = (p0, p1, t) => {
-    // let Px = (1-t) * p0.x + t * p1.x;
-    // let Py = (1-t) * p0.y + t * p1.y;
     p0 = p0.copy();
     p1 = p1.copy();
     p0.mult(1 - t);
     p1.mult(t);
     p0.add(p1);
     return p0;
-}
-
-const middleOfLine = (P0, P1) => {
-    Px = (P0.x + P1.x) / 2; 
-    Py = (P0.y + P1.y) / 2; 
-    return {x: Px, y: Py};
 }
 
 // const BernSteinPolForm = (P, t) => { marche pas truc de vecteur de merde
@@ -39,23 +31,25 @@ const deCasteljauAlgorithm = (Points, t) => {
     return {A, B, C, D, E, P};
 } 
 
-const vectLine = (P1, P2, color = "White") => {
-    fill(color)
+const vectLine = (P1, P2, color = "white") => {
+    stroke(color);
+    strokeWeight(2);
     line(P1.x, P1.y, P2.x, P2.y);
-    noFill();
+    noStroke();
 }
 
-const displayPoints = (Points, color = "White", onlyBorder = false) => {
+const points = (Points, color = "White", onlyBorder = false) => {
 
     if(!onlyBorder) fill(color);
     else {
         fill("black")
         stroke(color);
-        strokeWeight(4);
+        strokeWeight(3);
     }
     Points.forEach(e => ellipse(e.x, e.y, r));
     if(!onlyBorder) noFill();
     strokeWeight(1);
+    fill("white");
 }
 
 const detectColide = (Points) => {
@@ -67,4 +61,27 @@ const detectColide = (Points) => {
         }
     });
     return res;
+}
+
+const isInCanvas = () => {
+    return (mouseX > 0 && mouseX < (windowWidth * 80 / 100)  && mouseY > 0 && mouseY < windowHeight);
+}
+
+const displayPointsAndLines = ({A, B, C, D, E, P, Points}) => {
+    vectLine(A, B, "yellow");
+    vectLine(B, C, "yellow");
+    vectLine(D, E, "pink");
+    vectLine(Points[0], Points[1]);
+    vectLine(Points[1], Points[2]);
+    vectLine(Points[2], Points[3]);
+    points([A, B, C], "red", true);
+    points([D, E], "yellow", true);
+    points([P], "pink", true);
+    points(Points, "white", true);
+}
+
+const displayPoints = (Points) => {
+    vectLine(Points[0], Points[1]);
+    vectLine(Points[2], Points[3]);
+    points(Points, "white", true);
 }
