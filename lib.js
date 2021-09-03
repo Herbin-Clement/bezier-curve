@@ -67,7 +67,7 @@ const isInCanvas = () => {
     return (mouseX > 0 && mouseX < (windowWidth * 80 / 100)  && mouseY > 0 && mouseY < windowHeight);
 }
 
-const displayPointsAndLines = ({A, B, C, D, E, P, Points}) => {
+const drawPointsAndLines = ({A, B, C, D, E, P, Points}) => {
     vectLine(A, B, "yellow");
     vectLine(B, C, "yellow");
     vectLine(D, E, "pink");
@@ -80,7 +80,7 @@ const displayPointsAndLines = ({A, B, C, D, E, P, Points}) => {
     points(Points, "white", true);
 }
 
-const displayPoints = (Points) => {
+const drawPoints = (Points) => {
     vectLine(Points[0], Points[1]);
     vectLine(Points[2], Points[3]);
     points(Points, "white", true);
@@ -95,4 +95,15 @@ const computeBezierCurve = (dt) => {
         t += dt;
     }
     return array;
+}
+ 
+const drawBezierCurve = (vertexArray) => {
+    noFill();
+    strokeWeight(5);
+    beginShape();
+    vertexArray.forEach(({P}) => {
+        vertex(P.x, P.y);
+    });
+    strokeWeight(1);
+    endShape();
 }

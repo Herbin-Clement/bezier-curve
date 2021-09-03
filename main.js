@@ -38,20 +38,13 @@ function draw() {
         // vertexArray.forEach(({P}) => {
         //     vertex(P.x, P.y);
         // });
-        noFill();
-        strokeWeight(5);
-        beginShape();
-        vertexArray.forEach(({P}) => {
-            vertex(P.x, P.y);
-        });
-        strokeWeight(1);
-        endShape();
+        drawBezierCurve(vertexArray);
 
         if (pointsLinesBox.checked) {
             const data = deCasteljauAlgorithm(Points, tDisplay);
-            displayPointsAndLines({...data, Points});
+            drawPointsAndLines({...data, Points});
         } else if (pointsBox.checked) {
-            displayPoints(Points);
+            drawPoints(Points);
         }
     }
     if (!start) {
