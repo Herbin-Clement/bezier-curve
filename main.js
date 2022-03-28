@@ -1,17 +1,19 @@
 let Points = [];
 let r = 15;
-let tDisplay = 0.7;
+let t = 0;
 let dt = 0.002;
-let start = false;
 let index = -1;
+
+let start = false;
 let locked = false;
- 
-let vertexArray = [];
+let animation = true; 
+
 
 const timeSlider = document.querySelector("#time");
 const pointsLinesBox = document.querySelector("#pointsLines");
 const pointsBox = document.querySelector("#points");
 const startButton = document.querySelector("#start");
+const animationButton = document.querySelector("#animation");
 
 startButton.addEventListener("click",() => {
     if (Points.length === 4) {
@@ -20,67 +22,53 @@ startButton.addEventListener("click",() => {
     }
 });
 
+animationButton.addEventListener("click", () => {
+    animation = true;
+});
+
+pointsBox.addEventListener("click", () => {
+    !pointsBox.checked;
+    if(pointsBox.checked) pointsLinesBox.checked = false;
+});
+
+pointsLinesBox.addEventListener("click", () => {
+    !pointsLinesBox.checked;
+    if(pointsLinesBox.checked) pointsBox.checked = false;
+});
+
 function setup() {
     createCanvas(windowWidth * 80 / 100, windowHeight);
 }
 
 function draw() {
-    tDisplay = float(timeSlider.value);
     background("black");
-    c = color(255);
-    fill(c);
-    stroke(255);
-    if(start) {
-        vertexArray = computeBezierCurve(dt);
-        // if (t < 1) t += dt;
-        // const {A, B, C, D, E, P} = deCasteljauAlgorithm(Points, t);
-        // vertexArray.push({A, B, C, D, E, P});
-        // vertexArray.forEach(({P}) => {
-        //     vertex(P.x, P.y);
-        // });
-        drawBezierCurve(vertexArray);
 
+    t = float(timeSlider.value);
+
+    if(start && !animation) {
+        vertexArray = computeBezierCurve(Points, dt);
+        drawBezierCurve(vertexArray);
         if (pointsLinesBox.checked) {
-            const data = deCasteljauAlgorithm(Points, tDisplay);
+            const data = deCasteljauAlgorithm(Points, t);
             drawPointsAndLines({...data, Points});
         } else if (pointsBox.checked) {
             drawPoints(Points);
         }
-    }
-    if (!start) {
+    } else if (start && animation) {
+        if (t < 1) t += dt;
+        timeSlider.value = String(t);
+        if (pointsLinesBox.checked) {
+            const data = deCasteljauAlgorithm(Points, t);
+            drawPointsAndLines({...data, Points});
+        } else if (pointsBox.checked) {
+            drawPoints(Points);
+        }
+        visualizeBezierCurveDraw(Points, t, dt);
+        if (t > (1 - dt) && t < (1 + dt)) {
+            animationButton.disabled = false;
+            animation = false;
+        }
+    } else {
         points(Points, "white", true);
-    }
- 
-}
-
-function windowResized() {
-	resizeCanvas(windowWidth * 80 / 100, windowHeight);
-}
-
-function mouseClicked() {
-    
-    if (index !== -1) {
-    }
-    if (!start && isInCanvas()) {
-        Points.push(createVector(mouseX, mouseY));
-        if (Points.length > 4) Points.shift();
-        console.log(Points)
-    }
-    locked = false;
-}
-
-function mousePressed() {
-    if (pointsBox.checked || pointsLinesBox.checked) {
-        index = detectColide(Points);   
-        locked = true;
-    }
-}
-
-function mouseDragged() {
-    if (locked && index !== -1 && isInCanvas()) {
-        Points[index].x = mouseX;
-        Points[index].y = mouseY;
-        t = 0;
-        vertexArray = [];
     }
 }
